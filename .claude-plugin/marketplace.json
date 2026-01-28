@@ -1,0 +1,18 @@
+{
+  "name": "mesca",
+  "owner": {
+    "name": "Pierre Clisson",
+    "email": "pierre@clisson.com"
+  },
+  "source": {
+    "type": "github",
+    "repo": "mesca/claude-plugins"
+  },
+  "plugins": [
+    {
+      "name": "wf",
+      "source": "./plugins/wf",
+      "description": "AI-assisted workflows for Python development"
+    }
+  ]
+}

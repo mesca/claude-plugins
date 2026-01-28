@@ -1,0 +1,11 @@
+{
+  "name": "wf",
+  "description": "A plugin for Claude that helps with AI-assisted workflows",
+  "version": "0.1",
+  "author": {
+    "name": "Pierre Clisson",
+    "email": "pierre@clisson.com"
+  },
+  "license": "MIT",
+  "hooks": "../hooks/hooks.json"
+}
