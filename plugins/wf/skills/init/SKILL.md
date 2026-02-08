@@ -2,6 +2,8 @@
 name: init
 description: Scaffold a new Python project with the standard structure, tooling configuration, and a CLI that outputs project name and version. Use when starting a new project from scratch.
 context: fork
+agent: general-purpose
+argument-hint: <project-name> [description]
 ---
 
 # Init Skill
@@ -491,11 +493,12 @@ This removes Claude Code attribution from commits and pull requests.
 ## Scaffold Process
 
 1. **Parse arguments**: Extract project name and description
-2. **Normalize names**:
-   - `project-name` → kebab-case for CLI, pyproject.toml name
-   - `package_name` → snake_case for Python imports
+2. **Normalize names** (from the user-provided `<project-name>` argument):
+   - `project-name` → kebab-case for CLI, pyproject.toml `[project] name`
+   - `package_name` → snake_case for Python imports and `src/` paths
    - `ProjectName` → PascalCase for class names
-   - `PROJECT_NAME` → UPPER_SNAKE for env prefix
+   - `PROJECT_NAME_UPPER` → UPPER_SNAKE for env prefix
+   - After scaffolding, the **project-name** skill detects the name from `pyproject.toml` as `${PROJECT_NAME}` for all other skills
 3. **Create directories**: Build full directory structure
 4. **Generate files**: Write all files with proper substitutions
 5. **Initialize git**: `git init` and initial commit
@@ -533,8 +536,6 @@ This removes Claude Code attribution from commits and pull requests.
 
 ## See Also
 
-- **python** - Python conventions this scaffold follows
-- **documentation** - MkDocs setup details
-- **logging** - Loguru configuration
-- **tdd** - Test-driven development approach
-- **/compliance-check** - Verify scaffold compliance
+- **conventions** — conventions this scaffold follows
+- **documentation** — MkDocs setup details
+- **/compliance-check** — verify scaffold compliance

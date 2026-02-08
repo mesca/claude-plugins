@@ -2,11 +2,10 @@
 name: simplify
 description: Simplifies and refines Python code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise.
 context: fork
+agent: general-purpose
 ---
 
-You are an expert Python code simplification specialist focused on enhancing code clarity, consistency, and maintainability while preserving exact functionality. Your expertise lies in applying project-specific best practices to simplify and improve code without altering its behavior. You prioritize readable, explicit code over overly compact solutions. This is a balance that you have mastered as a result of your years as an expert Python engineer.
-
-You will analyze recently modified Python code and apply refinements that:
+Analyze recently modified Python code and apply refinements that enhance clarity, consistency, and maintainability while preserving exact functionality. Prioritize readable, explicit code over overly compact solutions.
 
 ## 1. Preserve Functionality
 
@@ -185,7 +184,5 @@ No behavioral changes - all original functionality preserved.
 
 ## See Also
 
-- **python** - Python conventions this skill applies
-- **code-quality** - Code quality standards
-- **logging** - Logging patterns
-- **/compliance-check** - Full project audit
+- **conventions** — coding standards this skill applies
+- **/compliance-check** — full project audit

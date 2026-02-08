@@ -1,26 +1,14 @@
 ---
 name: compliance-check
-description: Check project compliance with .claude/CLAUDE.md, .claude/PROJECT.md, and skills guidelines. Use when auditing codebase adherence, verifying code quality standards, checking testing coverage, or validating configuration files.
+description: Check project compliance with development guidelines and skills conventions. Use when auditing codebase adherence, verifying code quality standards, checking testing coverage, or validating configuration files.
 context: fork
+agent: general-purpose
+argument-hint: [category]
 ---
 
-# Compliance Check Skill
+# Compliance Check
 
-Perform a comprehensive audit of the codebase to ensure adherence to all development guidelines and standards defined in both CLAUDE.md (framework guidelines) and PROJECT.md (project-specific conventions).
-
-## When to Use This Skill
-
-✅ **Use when:**
-- Auditing project compliance before a release
-- Verifying code follows established guidelines
-- Checking architecture and structure adherence
-- Reviewing logging, testing, or security practices
-- Validating configuration files
-
-❌ **Don't use when:**
-- Checking .claude directory itself (use meta-check instead)
-- Verifying MCP server configuration (use mcp-check instead)
-- Just reading or understanding code without auditing
+Audit the codebase against the development guidelines defined in the project's instruction files (CLAUDE.md, PROJECT.md if they exist) and this plugin's skills.
 
 ## Usage
 
@@ -29,269 +17,159 @@ Perform a comprehensive audit of the codebase to ensure adherence to all develop
 ```
 
 **Categories:**
-- `structure` - Project structure and architecture compliance
-- `code-quality` - Code quality standards (docstrings, type hints, naming)
-- `testing` - Testing standards and coverage
-- `logging` - Logging practices (no print(), proper logger usage)
-- `git` - Git workflow and commit conventions
-- `performance` - Performance optimization practices
-- `security` - Security best practices
-- `config` - Configuration files (pyproject.toml, .env, etc.)
-- `all` - Run all checks (default if no category specified)
+- `structure` - Project structure and architecture
+- `code` - Code quality, docstrings, type hints, logging practices
+- `testing` - Test coverage and standards
+- `git` - Commit conventions and branch naming
+- `performance` - Optimization patterns
+- `security` - Vulnerabilities and secrets management
+- `config` - Configuration files and dependencies
+- `all` - Run all checks (default)
 
 **Examples:**
 - `/compliance-check` - Run all checks
-- `/compliance-check code-quality` - Check only code quality
-- `/compliance-check logging testing` - Check logging and testing
+- `/compliance-check code` - Check code quality only
+- `/compliance-check security testing` - Check security and testing
 
 ## Audit Categories
 
-### 1. Project Structure Compliance
+### 1. Structure & Architecture
 
-Check that the project follows the structure defined in CLAUDE.md and PROJECT.md:
+Check project layout and layer boundaries per the **conventions** skill:
+
 - Verify src-layout: `src/${PROJECT_NAME}/` exists (package name from pyproject.toml)
-- Check for proper separation: `${PROJECT_NAME}/core/`, `${PROJECT_NAME}/models/`, `${PROJECT_NAME}/services/`
-- Verify interface layer in `${PROJECT_NAME}/interfaces/` with CLI and/or REST subdirectories
-- Verify CLI entry point in `${PROJECT_NAME}/interfaces/cli/main.py` (if implemented)
-- Check if REST API exists in `${PROJECT_NAME}/interfaces/rest/main.py` (if implemented)
+- Check layer separation: `core/`, `models/`, `services/`, `interfaces/`
+- Verify `core/` contains ONLY infrastructure (logger, config, exceptions) — no business logic
+- Verify `services/` is framework-agnostic (no Typer/FastAPI imports)
+- Verify `interfaces/` are thin wrappers (call services, minimal logic)
+- Check for code duplication between CLI and REST interfaces
 - Verify tests mirror source structure in `tests/`
 
-### 2. Architecture Compliance
+### 2. Code Quality
 
-Verify layered architecture pattern from CLAUDE.md:
-- Check that `${PROJECT_NAME}/core/` contains ONLY infrastructure (logger, config, exceptions, utils) - NO business logic
-- Verify `${PROJECT_NAME}/services/` contains business logic (framework-agnostic, testable)
-- Verify `${PROJECT_NAME}/interfaces/cli/` is thin (calls services, minimal logic)
-- Verify `${PROJECT_NAME}/interfaces/rest/` is thin (calls services, minimal logic, if exists)
-- Check for code duplication between CLI and REST interfaces
-- Verify service modules have no Typer/FastAPI imports (framework-agnostic)
-- Check that business logic lives ONLY in services, never in interfaces
+Apply **conventions** and **documentation** skill checks:
 
-### 3. Code Quality Standards
+- All public functions have Google-style docstrings (Args, Returns, Raises)
+- Complete type hints on all function signatures
+- No `print()` statements — use logger from `${PROJECT_NAME}.core`
+- Logger used at appropriate levels (DEBUG, INFO, SUCCESS, WARNING, ERROR, CRITICAL)
+- Exceptions logged with `exc_info=True`
+- No sensitive data in log messages
+- Magic numbers extracted to named constants
+- Explicit variable names (`file_count` not `fc`)
+- Functions small and focused (single responsibility)
+- No emojis in documentation
+- README up to date
 
-Apply code-quality skill checks:
-- Verify all public functions have Google-style docstrings
-- Check for complete type hints on all function signatures
-- Look for print() statements (should use logger instead)
-- Check for magic numbers (should be named constants)
-- Verify function sizes (small, focused, single responsibility)
-- Check naming conventions (explicit variable names, ALL_CAPS constants)
+### 3. Testing
 
-### 4. Documentation Standards
+Apply **tdd** skill checks:
 
-Apply documentation skill checks:
-- Verify all public APIs have complete docstrings
-- Check docstring format (Google-style with Args, Returns, Raises, Examples)
-- Verify type hints are accurate and complete
-- Check for missing or outdated README sections
-- Verify no emojis in documentation
+- Test files exist for all modules
+- Test coverage high for core logic
+- Descriptive test names (`test_function_does_what_when_condition`)
+- Fixtures used for common setup
+- Both success and failure paths tested
+- Core logic tests have no CLI/API dependencies
 
-### 5. Testing Standards
+### 4. Git Workflow
 
-Apply tdd skill checks:
-- Verify test files exist for all modules
-- Check test coverage (aim for 100% of core logic)
-- Verify tests use descriptive names (test_function_does_what_when_condition)
-- Check for fixtures usage (no repeated setup code)
-- Verify both success and failure paths are tested
-- Check that core logic tests have no CLI/API dependencies
+Apply **git-workflow** skill checks:
 
-### 6. Logging Standards
+- Recent commits follow conventional format (`type: subject`)
+- Valid commit types (feat, fix, docs, style, refactor, test, perf, chore)
+- Subjects under 50 characters, imperative mood
+- Branch naming follows conventions
 
-Apply logging skill checks:
-- Verify NO print() statements exist in code
-- Check logger is imported correctly: `from ${PROJECT_NAME}.core import logger` (or `from ${PROJECT_NAME} import logger`)
-- Verify appropriate log levels used (DEBUG, INFO, SUCCESS, WARNING, ERROR, CRITICAL)
-- Check for structured logging with context (f-strings with variables)
-- Verify exceptions logged with `exc_info=True`
-- Check for sensitive data in log messages
+### 5. Performance
 
-### 7. Git Workflow Compliance
+Apply **performance** skill checks:
 
-Apply git-workflow skill checks:
-- Check recent commits follow conventional format (type: subject)
-- Verify commit types are valid (feat, fix, docs, style, refactor, test, perf, chore)
-- Check commit messages are under 50 characters
-- Verify branch naming follows conventions (if applicable)
+- No unoptimized patterns (loading large files into memory)
+- Caching on expensive operations
+- Generators used for large datasets
+- No N+1 database query patterns
+- Bulk operations instead of loops
+- Proper pagination on large result sets
 
-### 8. Performance
+### 6. Security
 
-Apply performance skill checks:
-- Look for unoptimized patterns (loading large files into memory)
-- Check for missing caching on expensive operations
-- Verify generators used for large datasets
-- Check for N+1 database query patterns
-- Look for blocking I/O that should be async
-- Verify bulk operations used instead of loops
-- Check for proper pagination on large result sets
+Apply **security** skill checks:
 
-### 9. Security
+- No hardcoded secrets (API keys, passwords, tokens)
+- Secrets in `.env`, `.env` gitignored
+- Input validation on user-facing functions
+- No SQL injection (parameterized queries only)
+- No command injection (no `shell=True` with user input)
+- Path traversal protection on file operations
+- Strong password hashing (Argon2/bcrypt, not MD5/SHA1)
+- Dependencies audited (`pip-audit`)
 
-Apply security skill checks:
-- Check for hardcoded secrets (API keys, passwords, tokens)
-- Verify secrets are in .env and .env is gitignored
-- Check for input validation on user-facing functions
-- Look for SQL injection vulnerabilities (raw queries)
-- Check for command injection (shell=True, os.system)
-- Verify path traversal protection on file operations
-- Check for proper password hashing (not MD5/SHA1)
-- Verify environment variables used for sensitive configuration
-- Check dependencies for known vulnerabilities (pip-audit)
+### 7. Configuration & Dependencies
 
-### 11. Configuration Files
-
-Check configuration compliance:
-- Verify `pyproject.toml` has correct project name and dependencies
-- Check Python version requirement (>=3.13)
-- Verify Ruff configuration (line-length: 88, target: py313)
-- Check pytest configuration exists
-- Verify `.env.example` exists with required variables
-- Check `.claude/mcp.json` has Context7 and Serena configured
-- Verify `.claude/settings.json` has proper deny rules
-
-### 12. Dependencies
-
-Check dependency organization:
-- Verify core dependencies in `[project.dependencies]`
-- Check optional dependency groups in `[dependency-groups.*]` (if any)
-- Verify dev dependencies in `[dependency-groups.dev]` or `[tool.uv.dev-dependencies]`
-- Check for unused dependencies
-- Verify all imports match declared dependencies
-
-## Category Mapping
-
-When user specifies a category, check only the relevant audit categories:
-
-- `structure` → Category 1 (Project Structure)
-- `code-quality` → Categories 2, 4 (Architecture, Code Quality)
-- `testing` → Category 5 (Testing Standards)
-- `logging` → Category 6 (Logging Standards)
-- `git` → Category 7 (Git Workflow)
-- `performance` → Category 8 (Performance)
-- `security` → Category 9 (Security)
-- `config` → Categories 10, 11 (Configuration Files, Dependencies)
-- `all` → All 11 categories
+- `pyproject.toml` has correct project name, Python version (>=3.14)
+- Ruff configured (line-length: 88, target: py314)
+- Pyright configured (strict mode)
+- pytest configured
+- `.env.example` exists with required variables
+- `.claude/settings.json` has `.env` deny rules
+- Core dependencies in `[project.dependencies]`
+- Dev dependencies in `[dependency-groups.dev]`
+- No unused dependencies; all imports match declared dependencies
 
 ## Audit Process
 
-1. **Parse input**: Determine which categories to check (default to all)
-2. **Read guidelines**: Review .claude/CLAUDE.md (framework guidelines), .claude/PROJECT.md (project-specific conventions), and relevant skills for selected categories
-3. **Scan codebase**: Use Serena for semantic analysis, Grep/Glob for pattern matching
-4. **Check selected categories**: Systematically verify compliance for requested categories only
-5. **Document issues**: List all non-compliance issues found with file:line references
-6. **Prioritize**: Categorize issues as Critical, High, Medium, Low priority
-7. **Provide fixes**: Suggest specific remediation steps for each issue
+1. **Parse input**: Determine which categories to check (default: all)
+2. **Read guidelines**: Check for .claude/CLAUDE.md and .claude/PROJECT.md (if they exist), and review relevant plugin skills
+3. **Scan codebase**: Use Grep/Glob for pattern matching, MCP tools if available
+4. **Check categories**: Systematically verify compliance
+5. **Document issues**: List findings with file:line references, prioritized as Critical/High/Medium/Low
+6. **Recommend fixes**: Specific, actionable remediation steps
 
 ## Output Format
 
-Provide a structured report:
-
 ```
-# Project Adherence Audit Report
+# Compliance Audit Report
 
 ## Summary
-- Total issues found: X
+- Total issues: X
 - Critical: X | High: X | Medium: X | Low: X
-- Overall compliance: X%
 
 ## Issues by Category
 
-### 1. Project Structure (X issues)
-- [CRITICAL] Missing src/${PROJECT_NAME}/ directory or incorrect structure
-- [HIGH] Business logic in interfaces/ instead of services/
-
-### 2. Architecture (X issues)
-- [HIGH] Business logic found in ${PROJECT_NAME}/interfaces/cli/ instead of services/
+### 1. Structure & Architecture (X issues)
+- [HIGH] Business logic in interfaces/cli/ instead of services/
 - [MEDIUM] Service module imports Typer (should be framework-agnostic)
 
-### 3. Code Quality (X issues)
-- [HIGH] ${PROJECT_NAME}/services/parser.py:45 - Missing docstring on parse_document()
-- [MEDIUM] ${PROJECT_NAME}/interfaces/cli/main.py:78 - Using print() instead of logger
-...
+### 2. Code Quality (X issues)
+- [HIGH] services/parser.py:45 - Missing docstring on parse_document()
+- [MEDIUM] interfaces/cli/main.py:78 - Using print() instead of logger
 
-### 4. Documentation (X issues)
-...
+### 3. Testing (X issues)
+- [CRITICAL] No tests for services/processor.py
 
-### 5. Testing (X issues)
-- [CRITICAL] No tests for ${PROJECT_NAME}/services/processor.py
-- [HIGH] Coverage only 65% (target: 80%+)
-...
-
-### 6. Logging (X issues)
-...
-
-### 7. Git Workflow (X issues)
-...
-
-### 8. Performance (X issues)
-- [MEDIUM] Loading entire file into memory in ${PROJECT_NAME}/services/processor.py:45
-- [LOW] Missing caching on expensive API call in ${PROJECT_NAME}/services/api.py:78
-...
-
-### 9. Security (X issues)
-- [CRITICAL] API key hardcoded in ${PROJECT_NAME}/services/api_client.py:12
-- [HIGH] SQL injection vulnerability in ${PROJECT_NAME}/services/db.py:34
-...
-
-### 10. Configuration (X issues)
-...
-
-### 11. Dependencies (X issues)
 ...
 
 ## Recommendations
 
-### Immediate Actions (Critical/High Priority)
-1. Fix security issue: Remove hardcoded API key
-2. Add missing tests for core modules
-3. Replace all print() with logger calls
+### Immediate (Critical/High)
+1. ...
 
-### Short-term Improvements (Medium Priority)
-1. Add missing docstrings
-2. Improve test coverage to 100%
-3. Extract magic numbers to constants
-
-### Long-term Enhancements (Low Priority)
-1. Refactor long functions
-2. Add more comprehensive examples to docstrings
-
-## Compliance Checklist
-
-- [ ] Project structure matches CLAUDE.md (src-layout with proper layers)
-- [ ] Architecture follows CLAUDE.md (services contain business logic, interfaces are thin)
-- [ ] Business logic in services/, not in interfaces/
-- [ ] All public functions have Google-style docstrings
-- [ ] No print() statements (logger only)
-- [ ] Test coverage ≥80%
-- [ ] All commits follow conventional format
-- [ ] No hardcoded secrets
-- [ ] Configuration files are correct
-- [ ] Dependencies properly organized
-- [ ] PROJECT.md conventions followed (project-specific rules)
+### Short-term (Medium)
+1. ...
 ```
-
-## Tools to Use
-
-- **Serena**: Semantic code analysis, find usages, understand data flow
-- **Grep**: Find patterns (print statements, missing docstrings, hardcoded values)
-- **Glob**: Find files matching patterns
-- **Read**: Examine specific files for detailed checks
-- **Bash**: Run tests, check coverage, run linters
 
 ## Notes
 
-- Be thorough but practical - prioritize actionable issues
+- Be thorough but practical — prioritize actionable issues
 - Provide file:line references for all issues
 - Suggest concrete fixes, not just problems
 - Consider project maturity (early stage vs production)
-- Check both what exists and what's missing
 
 ## See Also
 
-- **/meta-check** - Audit .claude directory structure
-- **/mcp-check** - Verify MCP server health
-- **code-quality** - Code quality standards referenced in audit
-- **logging** - Logging standards referenced in audit
-- **tdd** - Testing standards referenced in audit
-- **security** - Security standards referenced in audit
-- **python** - Python conventions referenced in audit
+- **/meta-check** — .claude directory and plugin structure
+- **/mcp-check** — MCP server health
+- **conventions** — conventions referenced in audit
+- **security** — security standards referenced in audit
+- **tdd** — testing standards referenced in audit

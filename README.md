@@ -16,14 +16,14 @@ User-invokable slash commands that run as autonomous subagents.
 | `/wf:simplify` | Simplify and refine Python code for clarity while preserving functionality (opus model) |
 | `/wf:compliance-check [category]` | Audit project compliance with coding standards and best practices |
 | `/wf:meta-check [category]` | Analyze .claude directory and plugin structure for issues |
-| `/wf:mcp-check` | Verify MCP servers (Context7, Serena, GitHub, Playwright) are configured and working |
+| `/wf:mcp-check` | Verify configured MCP servers are working correctly |
 
 **Usage examples:**
 ```bash
 /wf:init my-tool "A CLI tool for data processing"
 /wf:simplify
 /wf:compliance-check security
-/wf:compliance-check all
+/wf:compliance-check code testing
 /wf:meta-check plugin
 /wf:mcp-check
 ```
@@ -34,12 +34,10 @@ These skills are automatically applied by Claude Code when relevant - not invoka
 
 | Skill | Description |
 |-------|-------------|
-| `python` | General Python conventions (structure, imports, typing, tooling) |
-| `code-quality` | Code quality standards (naming, structure, docstrings) |
+| `conventions` | Project coding conventions (structure, quality, typing, logging, tooling) |
 | `documentation` | Documentation with Material for MkDocs and mkdocstrings |
-| `logging` | Logging with loguru (never use print()) |
 | `tdd` | Test-driven development with pytest |
-| `git-workflow` | Git conventions, commits, branches, GitHub MCP/CLI |
+| `git-workflow` | Git commit conventions and branching strategies |
 | `security` | Security best practices (secrets, validation, injection prevention) |
 | `performance` | Performance optimization (caching, generators, async) |
 | `project-name` | Detect project name from pyproject.toml/package.json |
@@ -103,7 +101,7 @@ Automatically triggered hooks:
 
 ### MCP Servers
 
-MCP servers (Context7, Serena, GitHub, Playwright) are pre-configured with the plugin.
+MCP servers are pre-configured with the plugin.
 
 **Verify MCP setup:**
 ```bash
@@ -164,7 +162,12 @@ uv add --dev pytest ruff pyright pip-audit
 
 ## TODO
 
-[ ] Tool discovery
-[ ] Workflow
-[ ] UI skills
+[ ] Contracts and models
+[ ] https://github.com/upstash/context7/tree/HEAD/plugins/claude/context7
+[ ] https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev
+[ ] https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum
+[ ] DevContainer  
+[ ] Tool discovery  
+[ ] Workflow  
+[ ] UI skills  
 [ ] Ralph loop

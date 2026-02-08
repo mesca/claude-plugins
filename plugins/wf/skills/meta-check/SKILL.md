@@ -2,6 +2,8 @@
 name: meta-check
 description: Analyze .claude directory and this plugin for inconsistencies, redundancies, and adherence to Claude Code best practices. Use when auditing skill definitions, checking plugin structure, validating settings files, or ensuring proper information hierarchy.
 context: fork
+agent: Explore
+argument-hint: [category]
 ---
 
 # Meta Check Skill
@@ -55,13 +57,13 @@ plugins/wf/
 │   ├── hooks.json            # Hook definitions
 │   └── *.sh                  # Hook scripts
 └── skills/
-    ├── compliance-check/     # command: true, subagent: true
+    ├── compliance-check/     # context: fork
     │   └── SKILL.md
-    ├── meta-check/           # command: true, subagent: true
+    ├── meta-check/           # context: fork
     │   └── SKILL.md
-    ├── mcp-check/            # command: true, subagent: true
+    ├── mcp-check/            # context: fork
     │   └── SKILL.md
-    └── <other-skills>/       # command: false (auto-loaded)
+    └── <other-skills>/       # user-invocable: false
         └── SKILL.md
 ```
 
@@ -72,8 +74,8 @@ plugins/wf/
 - **Hook scripts** are executable and exist at referenced paths
 - **Skills** have proper frontmatter:
   - All skills have `name` and `description`
-  - Command skills have `command: true` and `subagent: true`
-  - Auto-loaded skills have `command: false`
+  - Command skills have `context: fork` (and optionally `agent`)
+  - Background skills have `user-invocable: false`
 - **Skill naming** matches directory names (kebab-case)
 - **No orphaned files** in skills directories
 - **Cross-references** between skills are valid (See Also sections)
@@ -88,10 +90,12 @@ plugins/wf/
 - [ ] All hook scripts are executable
 
 # Skill Configuration
-- [ ] compliance-check: command=true, subagent=true
-- [ ] meta-check: command=true, subagent=true
-- [ ] mcp-check: command=true, subagent=true
-- [ ] All other skills: command=false
+- [ ] compliance-check: context=fork
+- [ ] meta-check: context=fork
+- [ ] mcp-check: context=fork
+- [ ] init: context=fork
+- [ ] simplify: context=fork
+- [ ] All other skills: user-invocable=false
 
 # Content Consistency
 - [ ] No hardcoded project names (use ${PROJECT_NAME})
@@ -553,7 +557,5 @@ When user specifies a category:
 
 ## See Also
 
-- **/compliance-check** - Audit project code compliance
-- **/mcp-check** - Verify MCP server health
-- **python** - Python conventions to verify in skills
-- **documentation** - Documentation standards for skills
+- **/compliance-check** — project code compliance
+- **/mcp-check** — MCP server health
