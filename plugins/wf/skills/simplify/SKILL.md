@@ -3,6 +3,7 @@ name: simplify
 description: Simplifies and refines Python code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise.
 context: fork
 agent: general-purpose
+argument-hint: [file-or-scope]
 ---
 
 Analyze recently modified Python code and apply refinements that enhance clarity, consistency, and maintainability while preserving exact functionality. Prioritize readable, explicit code over overly compact solutions.
@@ -185,4 +186,4 @@ No behavioral changes - all original functionality preserved.
 ## See Also
 
 - **conventions** — coding standards this skill applies
-- **/compliance-check** — full project audit
+- **/audit** — full project audit

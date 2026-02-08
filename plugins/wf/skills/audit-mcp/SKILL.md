@@ -1,11 +1,12 @@
 ---
-name: mcp-check
+name: audit-mcp
 description: Verify MCP servers are configured and working correctly. Use when troubleshooting MCP issues, validating server setup, or diagnosing configuration problems.
 context: fork
 agent: general-purpose
+argument-hint: [server-name]
 ---
 
-# MCP Check
+# Audit MCP
 
 Verify that configured MCP servers are reachable and working correctly.
 
@@ -71,5 +72,5 @@ All servers working / N issues found
 
 ## See Also
 
-- **/compliance-check** — project code compliance
-- **/meta-check** — .claude directory structure
+- **/audit** — project code compliance
+- **/audit-config** — .claude directory structure

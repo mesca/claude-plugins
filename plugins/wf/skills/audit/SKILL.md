@@ -1,23 +1,24 @@
 ---
-name: compliance-check
-description: Check project compliance with development guidelines and skills conventions. Use when auditing codebase adherence, verifying code quality standards, checking testing coverage, or validating configuration files.
+name: audit
+description: Audit project code against development guidelines and skills conventions. Use when checking codebase compliance, verifying code quality standards, checking testing coverage, or validating configuration files.
 context: fork
 agent: general-purpose
 argument-hint: [category]
 ---
 
-# Compliance Check
+# Audit
 
 Audit the codebase against the development guidelines defined in the project's instruction files (CLAUDE.md, PROJECT.md if they exist) and this plugin's skills.
 
 ## Usage
 
 ```
-/compliance-check [category]
+/audit [category]
 ```
 
 **Categories:**
 - `structure` - Project structure and architecture
+- `contracts` - API contracts and models-first compliance
 - `code` - Code quality, docstrings, type hints, logging practices
 - `testing` - Test coverage and standards
 - `git` - Commit conventions and branch naming
@@ -27,9 +28,9 @@ Audit the codebase against the development guidelines defined in the project's i
 - `all` - Run all checks (default)
 
 **Examples:**
-- `/compliance-check` - Run all checks
-- `/compliance-check code` - Check code quality only
-- `/compliance-check security testing` - Check security and testing
+- `/audit` - Run all checks
+- `/audit code` - Check code quality only
+- `/audit security testing` - Check security and testing
 
 ## Audit Categories
 
@@ -38,14 +39,26 @@ Audit the codebase against the development guidelines defined in the project's i
 Check project layout and layer boundaries per the **conventions** skill:
 
 - Verify src-layout: `src/${PROJECT_NAME}/` exists (package name from pyproject.toml)
-- Check layer separation: `core/`, `models/`, `services/`, `interfaces/`
+- Check layer separation: `contracts/`, `core/`, `models/`, `services/`, `interfaces/`
 - Verify `core/` contains ONLY infrastructure (logger, config, exceptions) — no business logic
 - Verify `services/` is framework-agnostic (no Typer/FastAPI imports)
 - Verify `interfaces/` are thin wrappers (call services, minimal logic)
 - Check for code duplication between CLI and REST interfaces
 - Verify tests mirror source structure in `tests/`
 
-### 2. Code Quality
+### 2. Contracts & Models
+
+Apply **spec-driven** skill checks:
+
+- Verify `contracts/` directory exists under `src/${PROJECT_NAME}/` if the project has an API
+- Contract files are valid OpenAPI 3.1 (`openapi.yaml`) or OpenRPC 1.3 (`openrpc.yaml`)
+- Every schema in `components/schemas/` has a corresponding Pydantic model
+- Model field names, types, and constraints match the contract schemas
+- Pydantic models exist in `models/` directories at appropriate levels (shared domain models in top-level `models/`, layer-specific in layer `models/`)
+- No service or interface code exists without corresponding models being defined first
+- Models do not import from higher architectural layers
+
+### 3. Code Quality
 
 Apply **conventions** and **documentation** skill checks:
 
@@ -61,7 +74,7 @@ Apply **conventions** and **documentation** skill checks:
 - No emojis in documentation
 - README up to date
 
-### 3. Testing
+### 4. Testing
 
 Apply **tdd** skill checks:
 
@@ -72,7 +85,7 @@ Apply **tdd** skill checks:
 - Both success and failure paths tested
 - Core logic tests have no CLI/API dependencies
 
-### 4. Git Workflow
+### 5. Git Workflow
 
 Apply **git-workflow** skill checks:
 
@@ -81,7 +94,7 @@ Apply **git-workflow** skill checks:
 - Subjects under 50 characters, imperative mood
 - Branch naming follows conventions
 
-### 5. Performance
+### 6. Performance
 
 Apply **performance** skill checks:
 
@@ -92,7 +105,7 @@ Apply **performance** skill checks:
 - Bulk operations instead of loops
 - Proper pagination on large result sets
 
-### 6. Security
+### 7. Security
 
 Apply **security** skill checks:
 
@@ -105,7 +118,7 @@ Apply **security** skill checks:
 - Strong password hashing (Argon2/bcrypt, not MD5/SHA1)
 - Dependencies audited (`pip-audit`)
 
-### 7. Configuration & Dependencies
+### 8. Configuration & Dependencies
 
 - `pyproject.toml` has correct project name, Python version (>=3.14)
 - Ruff configured (line-length: 88, target: py314)
@@ -168,8 +181,9 @@ Apply **security** skill checks:
 
 ## See Also
 
-- **/meta-check** — .claude directory and plugin structure
-- **/mcp-check** — MCP server health
+- **/audit-config** — .claude directory and plugin structure
+- **/audit-mcp** — MCP server health
 - **conventions** — conventions referenced in audit
+- **spec-driven** — contracts and models-first standards referenced in audit
 - **security** — security standards referenced in audit
 - **tdd** — testing standards referenced in audit

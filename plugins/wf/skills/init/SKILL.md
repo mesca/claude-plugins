@@ -18,7 +18,7 @@ Scaffold a new Python project following the standard conventions defined in the 
 - Creating a new microservice or tool
 
 ❌ **Don't use when:**
-- Project already has structure (use /compliance-check instead)
+- Project already has structure (use /audit instead)
 - Converting an existing project (manual migration needed)
 
 ## Usage
@@ -58,6 +58,8 @@ Scaffold a new Python project following the standard conventions defined in the 
 │   └── <package_name>/
 │       ├── __init__.py         # Package init with version
 │       ├── py.typed             # PEP 561 marker
+│       ├── contracts/          # API schemas (single source of truth)
+│       │   └── .gitkeep
 │       ├── core/
 │       │   ├── __init__.py     # Exports logger, config
 │       │   ├── logger.py       # Loguru configuration
@@ -516,7 +518,7 @@ This removes Claude Code attribution from commits and pull requests.
 
 ## Files Generated
 - pyproject.toml (project configuration)
-- src/<package_name>/ (source code)
+- src/<package_name>/ (source code with contracts/ placeholder)
 - tests/ (test suite)
 - docs/ (documentation)
 - .claude/settings.json (no attribution)
@@ -529,13 +531,16 @@ This removes Claude Code attribution from commits and pull requests.
 ## Next Steps
 1. cd <project-name>
 2. Review and customize pyproject.toml
-3. Start implementing in src/<package_name>/services/
-4. Run tests: uv run pytest
-5. Create initial git tag: git tag -a v0.1.0 -m "Initial release"
+3. Define your API contract in src/<package_name>/contracts/ (OpenAPI/OpenRPC)
+4. Write Pydantic models in src/<package_name>/models/
+5. Write tests, then implement in src/<package_name>/services/
+6. Run tests: uv run pytest
+7. Create initial git tag: git tag -a v0.1.0 -m "Initial release"
 ```
 
 ## See Also
 
 - **conventions** — conventions this scaffold follows
+- **spec-driven** — contracts-first development workflow (next step after scaffolding)
 - **documentation** — MkDocs setup details
-- **/compliance-check** — verify scaffold compliance
+- **/audit** — verify scaffold compliance

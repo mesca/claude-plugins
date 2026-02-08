@@ -1,18 +1,18 @@
 ---
-name: meta-check
-description: Analyze .claude directory and this plugin for inconsistencies, redundancies, and adherence to Claude Code best practices. Use when auditing skill definitions, checking plugin structure, validating settings files, or ensuring proper information hierarchy.
+name: audit-config
+description: Audit .claude directory and this plugin for inconsistencies, redundancies, and adherence to Claude Code best practices. Use when checking skill definitions, plugin structure, settings files, or information hierarchy.
 context: fork
 agent: Explore
 argument-hint: [category]
 ---
 
-# Meta Check Skill
+# Audit Config
 
-Perform a comprehensive meta-analysis of the `.claude/` directory AND this plugin to identify inconsistencies, redundancies, and deviations from Claude Code best practices.
+Audit the `.claude/` directory AND this plugin to identify inconsistencies, redundancies, and deviations from Claude Code best practices.
 
 ## When to Use This Skill
 
-✅ **Use when:**
+**Use when:**
 - Auditing .claude directory structure and organization
 - Validating this plugin's structure and composition
 - Checking skill definitions for proper scope and format
@@ -21,15 +21,15 @@ Perform a comprehensive meta-analysis of the `.claude/` directory AND this plugi
 - Ensuring naming and style consistency
 - Verifying information hierarchy (CLAUDE.md → PROJECT.md → Skills)
 
-❌ **Don't use when:**
-- Checking project code compliance (use /compliance-check instead)
-- Verifying MCP server connectivity (use /mcp-check instead)
+**Don't use when:**
+- Checking project code compliance (use /audit instead)
+- Verifying MCP server connectivity (use /audit-mcp instead)
 - Working on tasks unrelated to .claude or plugin configuration
 
 ## Usage
 
 ```bash
-/meta-check [category]
+/audit-config [category]
 ```
 
 **Categories:**
@@ -53,17 +53,17 @@ Verify the `wf` plugin is correctly composed:
 plugins/wf/
 ├── .claude-plugin/
 │   └── plugin.json           # Plugin metadata (required)
+├── .mcp.json                 # MCP server configuration
 ├── hooks/
 │   ├── hooks.json            # Hook definitions
 │   └── *.sh                  # Hook scripts
 └── skills/
-    ├── compliance-check/     # context: fork
-    │   └── SKILL.md
-    ├── meta-check/           # context: fork
-    │   └── SKILL.md
-    ├── mcp-check/            # context: fork
-    │   └── SKILL.md
-    └── <other-skills>/       # user-invocable: false
+    ├── audit/                # context: fork (code compliance)
+    ├── audit-config/         # context: fork (config analysis)
+    ├── audit-mcp/            # context: fork (MCP health)
+    ├── init/                 # context: fork (project scaffolding)
+    ├── simplify/             # context: fork (code refinement)
+    └── <background-skills>/  # user-invocable: false
         └── SKILL.md
 ```
 
@@ -90,9 +90,9 @@ plugins/wf/
 - [ ] All hook scripts are executable
 
 # Skill Configuration
-- [ ] compliance-check: context=fork
-- [ ] meta-check: context=fork
-- [ ] mcp-check: context=fork
+- [ ] audit: context=fork
+- [ ] audit-config: context=fork
+- [ ] audit-mcp: context=fork
 - [ ] init: context=fork
 - [ ] simplify: context=fork
 - [ ] All other skills: user-invocable=false
@@ -100,8 +100,8 @@ plugins/wf/
 # Content Consistency
 - [ ] No hardcoded project names (use ${PROJECT_NAME})
 - [ ] Python version consistent (3.14+)
-- [ ] All skills have "When to Use" sections
-- [ ] All skills have "Output Format" sections
+- [ ] All command skills have "When to Use" sections
+- [ ] All command skills have "Output Format" sections
 - [ ] See Also sections reference valid skills
 - [ ] No duplicate content across skills
 ```
@@ -178,13 +178,11 @@ description: Clear, specific description. Use when [concrete scenarios]. NOT whe
 
 ## When to Use This Skill
 
-✅ **Use when:**
+**Use when:**
 - Specific scenario 1
-- Specific scenario 2
 
-❌ **Don't use when:**
+**Don't use when:**
 - Exclusion 1
-- Exclusion 2
 
 ## Instructions
 [Detailed, focused instructions for ONE capability]
@@ -215,9 +213,6 @@ Verify configuration follows best practices:
   },
   "env": {
     "PROJECT_ROOT": "."
-  },
-  "hooks": {
-    "user-prompt-submit": "echo 'Hook triggered'"
   },
   "defaultMode": "ask"
 }
@@ -263,11 +258,11 @@ Identify duplicate or overlapping content:
 ```
 CLAUDE.md: "Use Google-style docstrings"
 documentation skill: "Use Google-style docstrings with Args, Returns..."
-❌ REDUNDANT: Skill should have the details, CLAUDE.md should reference skill
+-> REDUNDANT: Skill should have the details, CLAUDE.md should reference skill
 
-compliance-check skill: Checks project adherence
-meta-check skill: Checks .claude directory
-✅ NOT REDUNDANT: Different scopes and purposes
+audit skill: Checks project code adherence
+audit-config skill: Checks .claude directory
+-> NOT REDUNDANT: Different scopes and purposes
 ```
 
 ### 6. Consistency Analysis
@@ -316,18 +311,18 @@ Verify information is at the correct level:
 
 **Examples**:
 ```
-❌ CLAUDE.md: "Import logger with: from tth.core import logger"
-   → Too specific, belongs in logging skill
+BAD  CLAUDE.md: "Import logger with: from my_project.core import logger"
+     -> Too specific, belongs in conventions skill
 
-✅ CLAUDE.md: "Never use print() - always use logger"
-   ✅ logging skill: "Import: from tth.core import logger"
-   → Proper hierarchy: CLAUDE.md has principle, skill has details
+GOOD CLAUDE.md: "Never use print() - always use logger"
+     conventions skill: "Import: from ${PROJECT_NAME}.core import logger"
+     -> Proper hierarchy: CLAUDE.md has principle, skill has details
 
-❌ PROJECT.md: "Write tests before implementation (TDD)"
-   → Generic guideline, belongs in CLAUDE.md
+BAD  PROJECT.md: "Write tests before implementation (TDD)"
+     -> Generic guideline, belongs in CLAUDE.md
 
-✅ PROJECT.md: "Tests mirror architecture: tests/core/, tests/services/, tests/interfaces/"
-   → Project-specific structure, correct location
+GOOD PROJECT.md: "Tests mirror architecture: tests/core/, tests/services/, tests/interfaces/"
+     -> Project-specific structure, correct location
 ```
 
 ### 8. Best Practices Compliance
@@ -353,7 +348,7 @@ Verify cross-references and integrations:
 
 **Internal References**:
 - CLAUDE.md references skills correctly
-- Skills don't reference each other (should be independent)
+- Skills cross-reference each other accurately (See Also sections)
 - Instructions point to correct file paths
 
 **External Integrations**:
@@ -364,7 +359,6 @@ Verify cross-references and integrations:
 
 **Check for**:
 - Broken references (skill mentioned but doesn't exist)
-- Circular references (file A references B, B references A)
 - Outdated references (renamed or moved files)
 - Missing references (should point to skill but doesn't)
 - Integration mismatches (instructions say one thing, config says another)
@@ -395,7 +389,7 @@ When user specifies a category:
 ## Output Format
 
 ```markdown
-# .claude Directory Meta-Analysis Report
+# Config Audit Report
 
 ## Summary
 - Total issues found: X
@@ -413,123 +407,51 @@ When user specifies a category:
 - [MEDIUM] PROJECT.md duplicates architecture section from CLAUDE.md:45-67
 
 ### 3. Skills (X issues)
-- [CRITICAL] code-quality skill has overly broad scope - should be split
-- [HIGH] logging skill description lacks trigger terms
-- [MEDIUM] documentation skill duplicates content from CLAUDE.md
+- [HIGH] Skill description lacks trigger terms
+- [MEDIUM] Skill duplicates content from CLAUDE.md
 
 ### 4. Settings (X issues)
 - [CRITICAL] .env not protected - missing deny rule
 - [HIGH] settings.local.json is committed to git (should be ignored)
 
 ### 5. Redundancy (X issues)
-- [HIGH] Logging import instruction appears in 3 places
-- [MEDIUM] Google docstring requirement duplicated across files
+- [HIGH] Import instruction appears in 3 places
+- [MEDIUM] Docstring requirement duplicated across files
 
 ### 6. Consistency (X issues)
-- [MEDIUM] Mixed naming: code-quality/ but test_helpers/
+- [MEDIUM] Mixed naming: my-skill/ but other_skill/
 - [LOW] Inconsistent heading levels in skills
-
-### 7. Scope & Hierarchy (X issues)
-- [HIGH] CLAUDE.md contains specific import paths (belongs in skill)
-- [MEDIUM] PROJECT.md has generic TDD guidelines (belongs in CLAUDE.md)
-
-### 8. Best Practices (X issues)
-- [HIGH] Skill lacks "When to Use" section
-- [MEDIUM] Skill too complex - should be split
-
-### 9. Integration (X issues)
-- [HIGH] CLAUDE.md references 'formatting' skill but it doesn't exist
-- [MEDIUM] Hook script path doesn't exist: scripts/pre-commit.sh
 
 ## Recommendations
 
 ### Immediate Actions (Critical/High Priority)
-
-1. **Protect sensitive files**
-   ```json
-   // Add to settings.json
-   "permissions": {
-     "deny": ["Read(.env)", "Write(.env)", "Read(.env.*)", "Write(.env.*)"]
-   }
-   ```
-
-2. **Fix settings.local.json leak**
-   ```bash
-   # Add to .gitignore
-   echo ".claude/settings.local.json" >> .gitignore
-   git rm --cached .claude/settings.local.json
-   ```
-
-3. **Split overly broad code-quality skill**
-   - Extract to: naming-conventions/, docstrings/, type-hints/
-   - Update CLAUDE.md references
-
-4. **Remove redundant content**
-   - Keep logging import instruction ONLY in logging skill
-   - Reference skill from CLAUDE.md: "Use logging skill for patterns"
+1. ...
 
 ### Short-term Improvements (Medium Priority)
-
-1. **Fix broken references**
-   - CLAUDE.md:67 references 'formatting' skill → change to 'code-quality'
-   - Update all cross-references after skill split
-
-2. **Improve skill descriptions**
-   - Add trigger terms to all skill descriptions
-   - Add "When to Use" sections where missing
-
-3. **Normalize naming**
-   - Rename test_helpers/ → test-helpers/
-   - Ensure all files use kebab-case
-
-### Long-term Enhancements (Low Priority)
-
-1. **Enhance skill documentation**
-   - Add "Output Format" to skills where missing
-   - Add "Examples" to all skills
-
-2. **Improve consistency**
-   - Standardize heading hierarchy across all skills
-   - Use uniform bullet point style
+1. ...
 
 ## Compliance Checklist
-
 - [ ] Directory structure follows Claude Code standards
 - [ ] CLAUDE.md has specific, concrete instructions
-- [ ] PROJECT.md has only project-specific conventions
 - [ ] All skills are narrowly scoped (one capability each)
 - [ ] Skill descriptions include trigger terms
 - [ ] settings.json protects .env files
-- [ ] settings.local.json is git-ignored
 - [ ] No redundant content across files
 - [ ] Consistent naming conventions throughout
-- [ ] Information at correct hierarchy level
 - [ ] All cross-references are valid
-- [ ] No vague or abstract instructions
-- [ ] Best practices from Claude Code docs followed
 
 ## Health Score Breakdown
-
-- Structure: X% (Y/Z checks passed)
+- Structure: X%
 - Instructions: X%
 - Skills: X%
 - Settings: X%
-- Redundancy: X% (lower is better)
+- Redundancy: X%
 - Consistency: X%
-- Hierarchy: X%
 - Best Practices: X%
 - Integration: X%
 
 **Overall Health: X%** (weighted average)
 ```
-
-## Tools to Use
-
-- **Read**: Examine all .claude files systematically
-- **Glob**: Find files by pattern (.claude/**/*.md, etc.)
-- **Grep**: Search for duplicate content, specific patterns
-- **Bash**: Check git status, file permissions, json validation
-- **WebFetch**: Reference Claude Code official documentation for verification
 
 ## Implementation Notes
 
@@ -553,9 +475,9 @@ When user specifies a category:
 
 ---
 
-**Note**: This is a meta-analysis tool - it checks the checker. Use `/compliance-check` to verify the actual codebase against the .claude guidelines.
+**Note**: This is a config analysis tool. Use `/audit` to verify the actual codebase against development guidelines.
 
 ## See Also
 
-- **/compliance-check** — project code compliance
-- **/mcp-check** — MCP server health
+- **/audit** — project code compliance
+- **/audit-mcp** — MCP server health

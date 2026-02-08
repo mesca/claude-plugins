@@ -73,14 +73,19 @@ uv run pytest --cov=src                    # With coverage
 ## TDD Workflow
 
 1. Understand the requirement
-2. Write a failing test defining expected behavior
-3. Run test — verify it fails (RED)
-4. Write minimal code to pass
-5. Run test — verify it passes (GREEN)
-6. Refactor while keeping tests green
-7. Run all tests to catch regressions
-8. Repeat for next requirement
+2. **Define the contract** — write or update OpenAPI/OpenRPC schema in `contracts/`
+3. **Write Pydantic models** — create models matching the contract schemas before any logic
+4. Write a failing test defining expected behavior (RED)
+5. Run test — verify it fails
+6. Write minimal code to pass (GREEN)
+7. Run test — verify it passes
+8. Refactor while keeping tests green
+9. Run all tests to catch regressions
+10. Repeat for next requirement
+
+The order is always: **contract → models → tests → implementation**.
 
 ## See Also
 
+- **spec-driven** — contracts-first development and models placement
 - **conventions** — test file templates and pytest configuration

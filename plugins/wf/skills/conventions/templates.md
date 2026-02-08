@@ -40,6 +40,40 @@ class MainClass:
         self.value = value
 ```
 
+## New Pydantic Model
+
+```python
+"""Module description models."""
+
+from pydantic import BaseModel, Field
+
+
+class ItemBase(BaseModel):
+    """Shared fields for Item models."""
+
+    name: str = Field(min_length=1, max_length=200)
+    description: str = ""
+
+
+class ItemCreate(ItemBase):
+    """Fields required to create an item."""
+
+    pass
+
+
+class ItemUpdate(BaseModel):
+    """Fields that can be updated on an item. All optional."""
+
+    name: str | None = None
+    description: str | None = None
+
+
+class Item(ItemBase):
+    """Full item as stored and returned."""
+
+    id: int
+```
+
 ## New Test File
 
 ```python

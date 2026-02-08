@@ -1,6 +1,6 @@
 {
   "name": "wf",
-  "description": "A plugin for Claude that helps with AI-assisted workflows",
+  "description": "Opinionated Python development standards: project scaffolding, coding conventions, spec-driven development, testing, security, and automated audits",
   "version": "0.1",
   "author": {
     "name": "Pierre Clisson",

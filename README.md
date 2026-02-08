@@ -162,12 +162,12 @@ uv add --dev pytest ruff pyright pip-audit
 
 ## TODO
 
-[ ] Contracts and models
-[ ] https://github.com/upstash/context7/tree/HEAD/plugins/claude/context7
-[ ] https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev
-[ ] https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum
+[ ] Contracts and models  
+[ ] https://github.com/upstash/context7/tree/HEAD/plugins/claude/context7  
+[ ] https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev  
+[ ] https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum  
 [ ] DevContainer  
 [ ] Tool discovery  
 [ ] Workflow  
 [ ] UI skills  
-[ ] Ralph loop
+[ ] Docker skills
