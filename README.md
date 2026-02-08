@@ -1,56 +1,66 @@
 # Claude Plugins
 
-## Overview
+Opinionated Python development standards for Claude Code. Scaffolds projects, enforces coding conventions, and audits compliance automatically.
 
-Claude Plugins is a collection of tools and skills designed to enhance the productivity and efficiency of developers using the Claude AI platform.
-
-### Commands
+## Commands
 
 User-invokable slash commands that run as autonomous subagents.
 
-**Workspace:** `wf` (invoke as `/wf:<command>`)
-
 | Command | Description |
 |---------|-------------|
-| `/wf:init <name> [description]` | Scaffold a new Python project with standard structure, tooling, and CLI |
-| `/wf:simplify` | Simplify and refine Python code for clarity while preserving functionality (opus model) |
-| `/wf:compliance-check [category]` | Audit project compliance with coding standards and best practices |
-| `/wf:meta-check [category]` | Analyze .claude directory and plugin structure for issues |
-| `/wf:mcp-check` | Verify configured MCP servers are working correctly |
+| `/wf:init <name> [desc]` | Scaffold a new Python project with full structure and tooling |
+| `/wf:audit [category]` | Audit codebase compliance against development guidelines |
+| `/wf:audit-config [category]` | Audit `.claude/` directory and plugin structure for best practices |
+| `/wf:audit-mcp [server]` | Verify MCP servers are configured and working |
+| `/wf:simplify [scope]` | Refine Python code for clarity and consistency |
 
 **Usage examples:**
 ```bash
 /wf:init my-tool "A CLI tool for data processing"
 /wf:simplify
-/wf:compliance-check security
-/wf:compliance-check code testing
-/wf:meta-check plugin
-/wf:mcp-check
+/wf:audit security
+/wf:audit code testing
+/wf:audit-config plugin
+/wf:audit-mcp
 ```
 
-### Auto-Loaded Skills
+## Background Skills
 
-These skills are automatically applied by Claude Code when relevant - not invokable as commands:
+These skills are applied automatically by Claude when relevant:
 
-| Skill | Description |
-|-------|-------------|
-| `conventions` | Project coding conventions (structure, quality, typing, logging, tooling) |
-| `documentation` | Documentation with Material for MkDocs and mkdocstrings |
-| `tdd` | Test-driven development with pytest |
-| `git-workflow` | Git commit conventions and branching strategies |
-| `security` | Security best practices (secrets, validation, injection prevention) |
-| `performance` | Performance optimization (caching, generators, async) |
-| `project-name` | Detect project name from pyproject.toml/package.json |
+| Skill | Purpose |
+|-------|---------|
+| **conventions** | Python coding standards: structure, typing, logging, style |
+| **spec-driven** | Contracts-first development with OpenAPI/OpenRPC and models-first workflow |
+| **tdd** | Test-driven development: red-green-refactor with pytest |
+| **security** | Secrets management, input validation, injection prevention |
+| **performance** | Profiling, caching, memory optimization, async patterns |
+| **documentation** | Material for MkDocs setup and API doc generation |
+| **git-workflow** | Commit conventions, branch naming, pre-commit checks |
+| **project-name** | Detects and normalizes `${PROJECT_NAME}` from pyproject.toml |
 
-### Hooks
-
-Automatically triggered hooks:
+## Hooks
 
 | Hook | Event | Description |
 |------|-------|-------------|
 | `detect-rate-limit.sh` | Notification, Stop | Logs rate limit warnings to `~/.claude/rate-limit.log` |
 
-### Tech Stack
+## Project Architecture
+
+Projects scaffolded by `/wf:init` follow this layered structure:
+
+```
+src/<package>/
+    contracts/         # API schemas (OpenAPI 3.1, OpenRPC 1.3) - single source of truth
+    core/              # Infrastructure only: logger, config, exceptions
+    models/            # Shared Pydantic domain models
+    services/          # Business logic (framework-agnostic)
+    interfaces/        # Thin wrappers: cli/ (Typer), rest/ (FastAPI)
+```
+
+Development order: **contract -> models -> tests -> implementation**.
+
+## Tech Stack
 
 | Aspect | Tool |
 |--------|------|
@@ -105,10 +115,17 @@ MCP servers are pre-configured with the plugin.
 
 **Verify MCP setup:**
 ```bash
-/wf:mcp-check
+/wf:audit-mcp
 ```
 
-**Note:** For GitHub MCP, ensure `GITHUB_TOKEN` is set in your environment.
+Configured servers:
+
+| Server | Type | Purpose |
+|--------|------|---------|
+| serena | stdio | Code intelligence |
+| context7 | stdio | Documentation context |
+| github | http | GitHub API (requires `GITHUB_TOKEN`) |
+| playwright | stdio | Browser automation |
 
 ### Install Prerequisites
 
@@ -144,30 +161,48 @@ uv python install 3.14
 uv add --dev pytest ruff pyright pip-audit
 ```
 
+## File Structure
+
+```
+plugins/wf/
+    .claude-plugin/
+        plugin.json
+    .mcp.json
+    hooks/
+        hooks.json
+        detect-rate-limit.sh
+    skills/
+        audit/                      # /audit command
+        audit-config/               # /audit-config command
+        audit-mcp/                  # /audit-mcp command
+        init/                       # /init command
+        simplify/                   # /simplify command
+        conventions/                # Background: coding standards
+            SKILL.md
+            tooling.md              # Tool configurations
+            templates.md            # File templates
+        documentation/              # Background: docs setup
+            SKILL.md
+            mkdocs.md               # MkDocs configuration
+        git-workflow/               # Background: git conventions
+        performance/                # Background: optimization
+        project-name/               # Background: name detection
+        security/                   # Background: security practices
+        spec-driven/                # Background: contracts-first dev
+        tdd/                        # Background: test-driven dev
+```
+
 ## Workflow
 
 [TBD]
 
-### Scaffolding
-
-### Create specs
-
-### Create plan
-
-### Create tasks
-
-### Implement
-
-### Refine
-
 ## TODO
 
-[ ] Contracts and models  
-[ ] https://github.com/upstash/context7/tree/HEAD/plugins/claude/context7  
-[ ] https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev  
-[ ] https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum  
-[ ] DevContainer  
-[ ] Tool discovery  
-[ ] Workflow  
-[ ] UI skills  
+[ ] https://github.com/upstash/context7/tree/HEAD/plugins/claude/context7
+[ ] https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev
+[ ] https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum
+[ ] DevContainer
+[ ] Tool discovery
+[ ] Workflow
+[ ] UI skills
 [ ] Docker skills
