@@ -1,7 +1,7 @@
 ---
 name: project-name
 description: Detect and provide the project name from package.json or pyproject.toml. Use when you need the project name, package name, or module name for imports, paths, or documentation.
-command: false
+user-invocable: false
 ---
 
 # Project Name Skill

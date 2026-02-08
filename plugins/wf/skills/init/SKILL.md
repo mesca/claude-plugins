@@ -1,8 +1,7 @@
 ---
 name: init
 description: Scaffold a new Python project with the standard structure, tooling configuration, and a CLI that outputs project name and version. Use when starting a new project from scratch.
-command: true
-subagent: true
+context: fork
 ---
 
 # Init Skill

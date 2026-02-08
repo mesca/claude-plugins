@@ -1,7 +1,7 @@
 ---
 name: performance
 description: Apply performance optimization best practices. Use when profiling slow code, optimizing memory usage, implementing caching, handling large datasets, or improving database queries.
-command: false
+user-invocable: false
 ---
 
 # Performance Optimization Skill

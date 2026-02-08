@@ -1,8 +1,7 @@
 ---
 name: mcp-check
 description: Verify MCP servers are configured and working correctly. Use when troubleshooting MCP issues, validating server setup, or diagnosing configuration problems.
-command: true
-subagent: true
+context: fork
 ---
 
 # MCP Check Skill

@@ -1,7 +1,7 @@
 ---
 name: python
 description: General Python development guidelines for all Python code. Always apply these conventions when writing, reviewing, or modifying Python code. Covers project structure, imports, typing, style, and tooling.
-command: false
+user-invocable: false
 ---
 
 # Python Guidelines Skill

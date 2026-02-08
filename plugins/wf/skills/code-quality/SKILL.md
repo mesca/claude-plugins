@@ -1,7 +1,7 @@
 ---
 name: code-quality
 description: Enforce code quality standards including naming conventions, code structure, type hints, and best practices. Use when writing new code, reviewing code, or refactoring to ensure consistency and readability.
-command: false
+user-invocable: false
 ---
 
 # Code Quality Skill

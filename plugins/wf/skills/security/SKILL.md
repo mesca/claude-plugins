@@ -1,7 +1,7 @@
 ---
 name: security
 description: Apply security best practices for Python applications. Use when handling secrets, validating user input, preventing injection attacks, managing dependencies, or reviewing code for vulnerabilities.
-command: false
+user-invocable: false
 ---
 
 # Security Best Practices Skill

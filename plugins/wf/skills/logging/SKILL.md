@@ -1,7 +1,7 @@
 ---
 name: logging
 description: Implement and maintain logging using loguru framework. Use when adding logging to code, configuring log levels, debugging issues, or ensuring proper logging practices. Never use print() statements - always use logger.
-command: false
+user-invocable: false
 ---
 
 # Logging Skill

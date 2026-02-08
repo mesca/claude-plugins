@@ -1,8 +1,7 @@
 ---
 name: meta-check
 description: Analyze .claude directory and this plugin for inconsistencies, redundancies, and adherence to Claude Code best practices. Use when auditing skill definitions, checking plugin structure, validating settings files, or ensuring proper information hierarchy.
-command: true
-subagent: true
+context: fork
 ---
 
 # Meta Check Skill

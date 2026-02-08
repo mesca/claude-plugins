@@ -1,7 +1,7 @@
 ---
 name: git-workflow
 description: Follow git commit conventions and branching strategies. Use when committing changes, creating branches, or writing commit messages to maintain consistent version control practices.
-command: false
+user-invocable: false
 ---
 
 # Git Workflow Skill

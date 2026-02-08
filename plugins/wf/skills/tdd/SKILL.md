@@ -1,7 +1,7 @@
 ---
 name: tdd
 description: Apply test-driven development methodology to write tests before implementation. Use when adding new features, fixing bugs, or refactoring code. Guides through red-green-refactor cycle with pytest best practices.
-command: false
+user-invocable: false
 ---
 
 # Test-Driven Development Skill

@@ -1,8 +1,7 @@
 ---
 name: compliance-check
 description: Check project compliance with .claude/CLAUDE.md, .claude/PROJECT.md, and skills guidelines. Use when auditing codebase adherence, verifying code quality standards, checking testing coverage, or validating configuration files.
-command: true
-subagent: true
+context: fork
 ---
 
 # Compliance Check Skill

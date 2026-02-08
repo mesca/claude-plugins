@@ -1,7 +1,7 @@
 ---
 name: documentation
 description: Generate and maintain project documentation using Material for MkDocs and mkdocstrings. Use when creating API references, writing Google-style docstrings, building documentation sites, or maintaining README and architecture docs.
-command: false
+user-invocable: false
 ---
 
 # Documentation Skill
