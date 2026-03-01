@@ -109,3 +109,8 @@ Normalized (Python imports): my_awesome_tool
 **Usage**:
 - Import: `from my_awesome_tool.core import logger`
 - Path: `src/my_awesome_tool/services/`
+
+## See Also
+
+- **conventions** — uses `${PROJECT_NAME}` throughout for imports and paths
+- **/init** — scaffolds project with name from arguments, detectable by this skill

@@ -8,13 +8,26 @@ argument-hint: [file-or-scope]
 
 Analyze recently modified Python code and apply refinements that enhance clarity, consistency, and maintainability while preserving exact functionality. Prioritize readable, explicit code over overly compact solutions.
 
+## When to Use This Skill
+
+**Use when:**
+- Code has been recently modified and needs polish
+- Reviewing code for clarity and consistency improvements
+- Reducing complexity or nesting depth
+- Ensuring project standards are applied to changed code
+
+**Don't use when:**
+- Running a full project audit (use /audit instead)
+- Writing new features or fixing bugs (use relevant skills)
+- Code hasn't been modified recently (unless explicitly asked)
+
 ## 1. Preserve Functionality
 
 Never change what the code does - only how it does it. All original features, outputs, and behaviors must remain intact.
 
 ## 2. Apply Project Standards
 
-Follow the established Python coding standards:
+Follow the **conventions** skill standards (summary below for reference):
 
 - **Imports**: Absolute imports, sorted (stdlib → third-party → local)
 - **Type hints**: Complete annotations on all function signatures

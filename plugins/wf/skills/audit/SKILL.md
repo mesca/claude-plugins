@@ -10,6 +10,19 @@ argument-hint: [category]
 
 Audit the codebase against the development guidelines defined in the project's instruction files (CLAUDE.md, PROJECT.md if they exist) and this plugin's skills.
 
+## When to Use This Skill
+
+**Use when:**
+- Checking codebase compliance against development guidelines
+- Verifying code quality, testing, or security standards
+- Reviewing project structure and architecture
+- Running pre-release or periodic quality checks
+
+**Don't use when:**
+- Auditing .claude directory or plugin structure (use /audit-config instead)
+- Verifying MCP server connectivity (use /audit-mcp instead)
+- Simplifying or refactoring specific code (use /simplify instead)
+
 ## Usage
 
 ```

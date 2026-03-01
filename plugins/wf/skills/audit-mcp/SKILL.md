@@ -10,6 +10,18 @@ argument-hint: [server-name]
 
 Verify that configured MCP servers are reachable and working correctly.
 
+## When to Use This Skill
+
+**Use when:**
+- Troubleshooting MCP server connectivity issues
+- Validating server setup after configuration changes
+- Diagnosing missing dependencies or environment variables
+- Verifying servers work after plugin installation
+
+**Don't use when:**
+- Checking project code compliance (use /audit instead)
+- Auditing .claude directory structure (use /audit-config instead)
+
 ## Process
 
 1. **Find configuration**: Read `.mcp.json` at project root (or the plugin's `.mcp.json`)

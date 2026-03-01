@@ -8,7 +8,7 @@ argument-hint: <project-name> [description]
 
 # Init Skill
 
-Scaffold a new Python project following the standard conventions defined in the python skill.
+Scaffold a new Python project following the standard conventions defined in the **conventions** skill.
 
 ## When to Use This Skill
 
@@ -40,6 +40,8 @@ Scaffold a new Python project following the standard conventions defined in the 
 ## What Gets Created
 
 ### Directory Structure
+
+> This structure implements the **conventions** skill's project layout. If conventions change, update these templates to match.
 
 ```
 <project-name>/
