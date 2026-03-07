@@ -1,5 +1,4 @@
 ---
-name: audit-mcp
 description: Verify MCP servers are configured and working correctly. Use when troubleshooting MCP issues, validating server setup, or diagnosing configuration problems.
 context: fork
 agent: general-purpose

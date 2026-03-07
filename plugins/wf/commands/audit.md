@@ -1,5 +1,4 @@
 ---
-name: audit
 description: Audit project code against development guidelines and skills conventions. Use when checking codebase compliance, verifying code quality standards, checking testing coverage, or validating configuration files.
 context: fork
 agent: general-purpose

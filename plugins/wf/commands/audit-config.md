@@ -1,5 +1,4 @@
 ---
-name: audit-config
 description: Audit .claude directory and this plugin for inconsistencies, redundancies, and adherence to Claude Code best practices. Use when checking skill definitions, plugin structure, settings files, or information hierarchy.
 context: fork
 agent: Explore
@@ -54,27 +53,28 @@ plugins/wf/
 ├── .claude-plugin/
 │   └── plugin.json           # Plugin metadata (required)
 ├── .mcp.json                 # MCP server configuration
+├── commands/
+│   ├── init.md               # Project scaffolding
+│   ├── audit.md              # Code compliance
+│   ├── audit-config.md       # Config analysis
+│   ├── audit-mcp.md          # MCP health
+│   └── simplify.md           # Code refinement
 ├── hooks/
 │   ├── hooks.json            # Hook definitions
 │   └── *.sh                  # Hook scripts
 └── skills/
-    ├── audit/                # context: fork (code compliance)
-    ├── audit-config/         # context: fork (config analysis)
-    ├── audit-mcp/            # context: fork (MCP health)
-    ├── init/                 # context: fork (project scaffolding)
-    ├── simplify/             # context: fork (code refinement)
+    ├── simplify/             # Also available as background skill
     └── <background-skills>/  # user-invocable: false
         └── SKILL.md
 ```
 
 **Check for**:
 - **plugin.json** exists and is valid JSON with required fields (name, description, version)
-- **plugin.json** references hooks file if hooks exist
 - **hooks/hooks.json** is valid JSON with proper hook structure
 - **Hook scripts** are executable and exist at referenced paths
+- **Commands** have proper frontmatter (`description`, optionally `context`, `agent`, `argument-hint`)
 - **Skills** have proper frontmatter:
   - All skills have `name` and `description`
-  - Command skills have `context: fork` (and optionally `agent`)
   - Background skills have `user-invocable: false`
 - **Skill naming** matches directory names (kebab-case)
 - **No orphaned files** in skills directories
@@ -89,21 +89,20 @@ plugins/wf/
 - [ ] hooks/hooks.json exists and valid (if hooks dir exists)
 - [ ] All hook scripts are executable
 
+# Command Configuration
+- [ ] All commands have description
+- [ ] Commands with context=fork have agent set
+
 # Skill Configuration
-- [ ] audit: context=fork
-- [ ] audit-config: context=fork
-- [ ] audit-mcp: context=fork
-- [ ] init: context=fork
-- [ ] simplify: context=fork
-- [ ] All other skills: user-invocable=false
+- [ ] All background skills: user-invocable=false
 
 # Content Consistency
 - [ ] No hardcoded project names (use ${PROJECT_NAME})
 - [ ] Python version consistent (3.13+)
-- [ ] All command skills have "When to Use" sections
-- [ ] All command skills have "Output Format" sections
-- [ ] See Also sections reference valid skills
-- [ ] No duplicate content across skills
+- [ ] All commands have "When to Use" sections
+- [ ] All commands have "Output Format" sections
+- [ ] See Also sections reference valid skills/commands
+- [ ] No duplicate content across skills and commands
 ```
 
 ### 1. Directory Structure Compliance

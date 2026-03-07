@@ -1,5 +1,4 @@
 ---
-name: init
 description: Scaffold a new Python project with the standard structure, tooling configuration, and a CLI that outputs project name and version. Use when starting a new project from scratch.
 context: fork
 agent: general-purpose
@@ -12,12 +11,12 @@ Scaffold a new Python project following the standard conventions defined in the 
 
 ## When to Use This Skill
 
-✅ **Use when:**
+**Use when:**
 - Starting a new Python project from scratch
 - Setting up project structure for an existing idea
 - Creating a new microservice or tool
 
-❌ **Don't use when:**
+**Don't use when:**
 - Project already has structure (use /audit instead)
 - Converting an existing project (manual migration needed)
 
