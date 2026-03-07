@@ -29,6 +29,7 @@ Audit the codebase against the development guidelines defined in the project's i
 ```
 
 **Categories:**
+- `constitution` - Constitution enforcement (development loop, interface design)
 - `structure` - Project structure and architecture
 - `contracts` - API contracts and models-first compliance
 - `code` - Code quality, docstrings, type hints, logging practices
@@ -45,6 +46,24 @@ Audit the codebase against the development guidelines defined in the project's i
 - `/audit security testing` - Check security and testing
 
 ## Audit Categories
+
+### 0. Constitution
+
+Read the constitution from `${CLAUDE_PLUGIN_ROOT}/hooks/constitution.md` and verify the project adheres to its principles:
+
+**Development loop compliance:**
+- Verify contracts exist before models (contract → models → tests → implementation)
+- Contracts use the correct formats: OpenAPI 3.1, OpenRPC 1.3, or docopt
+- Models are Pydantic-based
+- Tests use TDD approach with hypothesis for property-based testing, edge cases, and behavioral tests
+- Code has been simplified after implementation (no unnecessary complexity)
+- Documentation is up to date with implementation
+
+**Interface design compliance:**
+- CLI and GUI interfaces follow user-centric design
+- Mental model is simple and obvious
+- Interfaces are simple, intuitive, consistent, and explicit
+- No surprising behavior or hidden complexity for the end user
 
 ### 1. Structure & Architecture
 
@@ -145,7 +164,8 @@ Apply **security** skill checks:
 ## Audit Process
 
 1. **Parse input**: Determine which categories to check (default: all)
-2. **Read guidelines**: Check for .claude/CLAUDE.md and .claude/PROJECT.md (if they exist), and review relevant plugin skills
+2. **Read constitution**: Read `${CLAUDE_PLUGIN_ROOT}/hooks/constitution.md` for core principles
+3. **Read guidelines**: Check for .claude/CLAUDE.md and .claude/PROJECT.md (if they exist), and review relevant plugin skills
 3. **Scan codebase**: Use Grep/Glob for pattern matching, MCP tools if available
 4. **Check categories**: Systematically verify compliance
 5. **Document issues**: List findings with file:line references, prioritized as Critical/High/Medium/Low
@@ -182,7 +202,13 @@ Apply **security** skill checks:
 
 ### Short-term (Medium)
 1. ...
+
+<audit score="N" pass="true|false" />
 ```
+
+**Score**: 0-100 based on weighted issue counts (Critical=20, High=10, Medium=3, Low=1), starting from 100.
+**Pass**: `true` if score >= 90 and only Low issues remain, `false` otherwise.
+The `<audit>` tag MUST be the last line of output, always.
 
 ## Notes
 

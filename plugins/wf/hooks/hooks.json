@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/load-constitution.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "hooks": [

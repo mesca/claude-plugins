@@ -38,7 +38,8 @@ ${PROJECT_NAME}/
 │       ├── services/          # Business logic (framework-agnostic)
 │       └── interfaces/        # Entry points
 │           ├── cli/           # CLI (Typer)
-│           └── rest/          # REST API (FastAPI)
+│           ├── rest/          # REST API (FastAPI)
+│           └── rpc/           # JSON-RPC over WebSocket
 └── tests/
     ├── conftest.py
     └── ...                    # Mirror src/ structure
@@ -255,6 +256,7 @@ Before committing:
 | Logging | loguru (never print()) |
 | CLI | Typer |
 | REST API | FastAPI |
+| JSON-RPC / WebSocket | jsonrpc-websocket, websockets |
 | Line length | 88 |
 | Import style | Absolute, sorted |
 

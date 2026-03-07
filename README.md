@@ -2,6 +2,16 @@
 
 Opinionated Python development standards for Claude Code. Scaffolds projects, enforces coding conventions, and audits compliance automatically.
 
+## Constitution
+
+Core principles injected at every session start. Non-negotiable.
+
+**Development loop** — always follow this sequence, never skip steps:
+
+**contract → models → tests → implementation → simplify → documentation → audit**
+
+**Interface design** — every interface (CLI, API, web) must be designed from the end-user perspective: obvious mental model, simple, intuitive, consistent, explicit.
+
 ## Commands
 
 User-invokable slash commands that run as autonomous subagents.
@@ -31,6 +41,7 @@ These skills are applied automatically by Claude when relevant:
 | Skill | Purpose |
 |-------|---------|
 | **conventions** | Python coding standards: structure, typing, logging, style |
+| **simplify** | Code refinement for clarity and consistency |
 | **spec-driven** | Contracts-first development with OpenAPI/OpenRPC and models-first workflow |
 | **tdd** | Test-driven development: red-green-refactor with pytest |
 | **security** | Secrets management, input validation, injection prevention |
@@ -43,6 +54,7 @@ These skills are applied automatically by Claude when relevant:
 
 | Hook | Event | Description |
 |------|-------|-------------|
+| `load-constitution.sh` | SessionStart | Injects constitution into every session |
 | `detect-rate-limit.sh` | Notification, Stop | Logs rate limit warnings to `~/.claude/rate-limit.log` |
 
 ## Project Architecture
@@ -51,28 +63,28 @@ Projects scaffolded by `/wf:init` follow this layered structure:
 
 ```
 src/<package>/
-    contracts/         # API schemas (OpenAPI 3.1, OpenRPC 1.3) - single source of truth
+    contracts/         # API schemas (OpenAPI 3.1, OpenRPC 1.3, docopt) — single source of truth
     core/              # Infrastructure only: logger, config, exceptions
     models/            # Shared Pydantic domain models
     services/          # Business logic (framework-agnostic)
-    interfaces/        # Thin wrappers: cli/ (Typer), rest/ (FastAPI)
+    interfaces/        # Thin wrappers: cli/ (Typer), rest/ (FastAPI), rpc/ (JSON-RPC/WebSocket)
 ```
-
-Development order: **contract -> models -> tests -> implementation**.
 
 ## Tech Stack
 
 | Aspect | Tool |
 |--------|------|
-| Python version | 3.14+ |
+| Python version | 3.13+ |
 | Package manager | uv |
 | Build system | Hatchling + hatch-vcs |
 | Linter/Formatter | Ruff |
 | Type checker | Pyright (strict) |
 | Test framework | pytest |
+| Property-based testing | hypothesis |
 | Documentation | Material for MkDocs + mkdocstrings |
 | CLI framework | Typer |
 | REST API | FastAPI + uvicorn |
+| JSON-RPC / WebSocket | jsonrpc-websocket, websockets |
 | Simple websites | FastAPI + Jinja2 + HTMX |
 | Logging | loguru |
 
@@ -154,55 +166,15 @@ uv sync --all-groups
 
 For existing projects, ensure you have:
 ```bash
-# Python 3.14+
-uv python install 3.14
+# Python 3.13+
+uv python install 3.13
 
 # Dev dependencies
-uv add --dev pytest ruff pyright pip-audit
+uv add --dev pytest ruff pyright pip-audit hypothesis
 ```
-
-## File Structure
-
-```
-plugins/wf/
-    .claude-plugin/
-        plugin.json
-    .mcp.json
-    hooks/
-        hooks.json
-        detect-rate-limit.sh
-    skills/
-        audit/                      # /audit command
-        audit-config/               # /audit-config command
-        audit-mcp/                  # /audit-mcp command
-        init/                       # /init command
-        simplify/                   # /simplify command
-        conventions/                # Background: coding standards
-            SKILL.md
-            tooling.md              # Tool configurations
-            templates.md            # File templates
-        documentation/              # Background: docs setup
-            SKILL.md
-            mkdocs.md               # MkDocs configuration
-        git-workflow/               # Background: git conventions
-        performance/                # Background: optimization
-        project-name/               # Background: name detection
-        security/                   # Background: security practices
-        spec-driven/                # Background: contracts-first dev
-        tdd/                        # Background: test-driven dev
-```
-
-## Workflow
-
-[TBD]
 
 ## TODO
 
-[ ] https://github.com/upstash/context7/tree/HEAD/plugins/claude/context7
-[ ] https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev
-[ ] https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum
-[ ] DevContainer
-[ ] Tool discovery
-[ ] Workflow
-[ ] UI skills
-[ ] Docker skills
+- [ ] UI skills
+- [ ] Docker skills
+- [ ] Git worktree rules
