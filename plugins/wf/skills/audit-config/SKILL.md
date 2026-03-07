@@ -99,7 +99,7 @@ plugins/wf/
 
 # Content Consistency
 - [ ] No hardcoded project names (use ${PROJECT_NAME})
-- [ ] Python version consistent (3.14+)
+- [ ] Python version consistent (3.13+)
 - [ ] All command skills have "When to Use" sections
 - [ ] All command skills have "Output Format" sections
 - [ ] See Also sections reference valid skills

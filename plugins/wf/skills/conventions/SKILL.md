@@ -54,11 +54,11 @@ ${PROJECT_NAME}/
 
 ## Python Version
 
-Target Python 3.14+:
+Target Python 3.13+:
 
 ```toml
 [project]
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 ```
 
 ## Imports
@@ -93,7 +93,7 @@ def process_file(
     ...
 ```
 
-### Modern Typing (Python 3.14+)
+### Modern Typing (Python 3.13+)
 
 ```python
 list[str]           # not List[str]
@@ -243,7 +243,7 @@ Before committing:
 
 | Aspect | Convention |
 |--------|------------|
-| Python version | 3.14+ |
+| Python version | 3.13+ |
 | Package manager | uv |
 | Build system | Hatchling + hatch-vcs |
 | Versioning | Git tags (vX.Y.Z) |

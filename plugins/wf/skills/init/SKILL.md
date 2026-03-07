@@ -89,7 +89,7 @@ name = "<project-name>"
 description = "<description>"
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 dynamic = ["version"]
 dependencies = [
     "loguru>=0.7",
@@ -137,7 +137,7 @@ deploy = "mkdocs gh-deploy --force"
 
 [tool.ruff]
 line-length = 88
-target-version = "py314"
+target-version = "py313"
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "I", "B", "S", "C4", "UP", "N", "SIM"]
@@ -147,7 +147,7 @@ ignore = ["E501"]
 "tests/*" = ["S101"]
 
 [tool.pyright]
-pythonVersion = "3.14"
+pythonVersion = "3.13"
 typeCheckingMode = "strict"
 include = ["src"]
 exclude = ["**/__pycache__", ".venv"]
@@ -478,7 +478,7 @@ Thumbs.db
 ### .python-version
 
 ```
-3.14
+3.13
 ```
 
 ### .claude/settings.json

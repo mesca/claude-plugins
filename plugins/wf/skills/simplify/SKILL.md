@@ -36,7 +36,7 @@ Follow the **conventions** skill standards (summary below for reference):
 - **Logging**: Never `print()` - always use `logger` from `${PROJECT_NAME}.core`
 - **Error handling**: Specific exceptions, `exc_info=True` for logging
 - **Line length**: 88 characters (Ruff default)
-- **Python version**: 3.14+ features (use `|` for unions, built-in generics)
+- **Python version**: 3.13+ features (use `|` for unions, built-in generics)
 
 ## 3. Enhance Clarity
 

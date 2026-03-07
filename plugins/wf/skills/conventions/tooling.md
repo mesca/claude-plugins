@@ -24,7 +24,7 @@ uv run ruff check --fix . # Auto-fix
 ```toml
 [tool.ruff]
 line-length = 88
-target-version = "py314"
+target-version = "py313"
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "I", "B", "S", "C4", "UP", "N", "SIM"]
@@ -44,7 +44,7 @@ uv run pyright src/      # Type check specific directory
 **pyproject.toml**:
 ```toml
 [tool.pyright]
-pythonVersion = "3.14"
+pythonVersion = "3.13"
 typeCheckingMode = "strict"
 include = ["src"]
 exclude = ["**/__pycache__", ".venv"]

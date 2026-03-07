@@ -133,8 +133,8 @@ Apply **security** skill checks:
 
 ### 8. Configuration & Dependencies
 
-- `pyproject.toml` has correct project name, Python version (>=3.14)
-- Ruff configured (line-length: 88, target: py314)
+- `pyproject.toml` has correct project name, Python version (>=3.13)
+- Ruff configured (line-length: 88, target: py313)
 - Pyright configured (strict mode)
 - pytest configured
 - `.env.example` exists with required variables
