@@ -1,11 +1,10 @@
 {
   "name": "wf",
   "description": "Opinionated Python development standards: project scaffolding, coding conventions, spec-driven development, testing, security, and automated audits",
-  "version": "0.2",
+  "version": "0.2.1",
   "author": {
     "name": "Pierre Clisson",
     "email": "pierre@clisson.com"
   },
-  "license": "MIT",
-  "hooks": "./hooks/hooks.json"
+  "license": "MIT"
 }
