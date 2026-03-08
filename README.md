@@ -144,13 +144,24 @@ The **github** plugin requires a `GITHUB_PERSONAL_ACCESS_TOKEN` environment vari
    ```
 3. Reload your shell (`source ~/.zshrc`) before launching Claude Code.
 
+#### CC-SDD (Spec-Driven Development)
+
+Adds `/kiro:*` commands for structured requirements → design → tasks → implementation workflow.
+
+```bash
+cd your-project
+npx cc-sdd@latest --claude-agent --lang en
+```
+
+See https://github.com/gotalab/cc-sdd for all options (languages, agents, customization).
+
 ### Install the Plugin
 
 Inside Claude Code:
 
 ```
 /plugin marketplace add mesca/claude-plugins
-/plugin install wf@mesca-claude-plugins
+/plugin install wf@mesca
 ```
 
 Restart Claude Code to load the plugin.

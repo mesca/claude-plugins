@@ -1,7 +1,7 @@
 {
   "name": "wf",
   "description": "Opinionated Python development standards: project scaffolding, coding conventions, spec-driven development, testing, security, and automated audits",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": {
     "name": "Pierre Clisson",
     "email": "pierre@clisson.com"
