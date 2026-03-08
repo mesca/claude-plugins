@@ -18,9 +18,7 @@ Audit the codebase against the development guidelines defined in the project's i
 - Running pre-release or periodic quality checks
 
 **Don't use when:**
-- Auditing .claude directory or plugin structure (use /audit-config instead)
-- Verifying MCP server connectivity (use /audit-mcp instead)
-- Simplifying or refactoring specific code (use /simplify instead)
+- Simplifying or refactoring specific code (use /simplifier instead)
 
 ## Usage
 
@@ -81,8 +79,8 @@ Check project layout and layer boundaries per the **conventions** skill:
 
 Apply **spec-driven** skill checks:
 
-- Verify `contracts/` directory exists under `src/${PROJECT_NAME}/` if the project has an API
-- Contract files are valid OpenAPI 3.1 (`openapi.yaml`) or OpenRPC 1.3 (`openrpc.yaml`)
+- Verify `contracts/` directory exists under `src/${PROJECT_NAME}/` if the project has an API or CLI
+- Contract files are valid OpenAPI 3.1 (`openapi.yaml`), OpenRPC 1.3 (`openrpc.yaml`), or docopt (`cli.txt`)
 - Every schema in `components/schemas/` has a corresponding Pydantic model
 - Model field names, types, and constraints match the contract schemas
 - Pydantic models exist in `models/` directories at appropriate levels (shared domain models in top-level `models/`, layer-specific in layer `models/`)
@@ -219,8 +217,6 @@ The `<audit>` tag MUST be the last line of output, always.
 
 ## See Also
 
-- **/audit-config** — .claude directory and plugin structure
-- **/audit-mcp** — MCP server health
 - **conventions** — conventions referenced in audit
 - **spec-driven** — contracts and models-first standards referenced in audit
 - **security** — security standards referenced in audit

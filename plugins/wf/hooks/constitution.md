@@ -6,19 +6,21 @@ These rules are non-negotiable. Always enforce them.
 
 Always follow this sequence. Never skip steps, never jump ahead.
 
-**contract → models → tests → implementation → simplify → documentation → audit**
+**contract → models → tests → implementation → simplify → document → audit**
 
-- Contract first (when the project has an API or CLI): OpenAPI 3.1, OpenRPC 1.3, or docopt
-- Models derive from the contract: Pydantic
-- Tests before implementation: TDD, always
-  - Unit tests: cover edge cases and error paths
-  - Property-based tests: hypothesis for invariants
-  - Interface tests: test every CLI/API/web surface as the end user would experience it
-- Simplify after implementation: `/wf:simplify`
-- Document what was built: update existing docs, create missing ones (user guide, developer guide, API/CLI reference, architecture, examples)
-- Audit the result: `/wf:audit`
+1. Contract first (when the project has an API or CLI): OpenAPI 3.1, OpenRPC 1.3, or docopt
+2. Models derive from the contract: Pydantic
+3. Tests before implementation: TDD, always
+   - Unit tests: cover edge cases and error paths
+   - Property-based tests: hypothesis for invariants
+   - Interface tests: test every CLI/API/web surface as the end user would experience it
+4. Simplify after implementation: `/wf:simplifier`
+5. Document what was built: update existing docs, create missing ones (user guide, developer guide, API/CLI reference, architecture, examples)
+6. Audit the result: `/wf:audit`
 
-Apply this plugin's skills at each step.
+When audit fails (`<audit score="N" pass="false" />`): fix the issues, re-run `/wf:audit`. Repeat until it passes (`<audit score="N" pass="true" />`) and all instructions are fully implemented.
+
+Apply the `wf` plugin skills at each step.
 
 ## Interface design
 

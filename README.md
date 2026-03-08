@@ -20,18 +20,14 @@ User-invokable slash commands that run as autonomous subagents.
 |---------|-------------|
 | `/wf:init <name> [desc]` | Scaffold a new Python project with full structure and tooling |
 | `/wf:audit [category]` | Audit codebase compliance against development guidelines |
-| `/wf:audit-config [category]` | Audit `.claude/` directory and plugin structure for best practices |
-| `/wf:audit-mcp [server]` | Verify MCP servers are configured and working |
-| `/wf:simplify [scope]` | Refine Python code for clarity and consistency |
+| `/wf:simplifier [scope]` | Refine Python code for clarity and consistency |
 
 **Usage examples:**
 ```bash
 /wf:init my-tool "A CLI tool for data processing"
-/wf:simplify
+/wf:simplifier
 /wf:audit security
 /wf:audit code testing
-/wf:audit-config plugin
-/wf:audit-mcp
 ```
 
 ## Background Skills
@@ -41,8 +37,8 @@ These skills are applied automatically by Claude when relevant:
 | Skill | Purpose |
 |-------|---------|
 | **conventions** | Python coding standards: structure, typing, logging, style |
-| **simplify** | Code refinement for clarity and consistency |
-| **spec-driven** | Contracts-first development with OpenAPI/OpenRPC and models-first workflow |
+| **simplifier** | Code refinement for clarity and consistency |
+| **spec-driven** | Contracts-first development with OpenAPI/OpenRPC/docopt and models-first workflow |
 | **tdd** | Test-driven development: red-green-refactor with pytest |
 | **security** | Secrets management, input validation, injection prevention |
 | **performance** | Profiling, caching, memory optimization, async patterns |
@@ -90,70 +86,65 @@ src/<package>/
 
 ## Setup
 
+### Prerequisites
+
+#### System Dependencies
+
+**macOS** (via Homebrew):
+
+```bash
+brew install node uv
+```
+
+**Linux** (Debian/Ubuntu):
+
+```bash
+# Node.js (via NodeSource)
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**Linux** (Fedora/RHEL):
+
+```bash
+sudo dnf install nodejs
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Verify installations:
+
+```bash
+node --version && npx --version && uv --version && uvx --version
+```
+
+#### Companion Plugins
+
+Install from the official Anthropic Claude Plugins marketplace:
+
+```bash
+claude plugins:install serena
+claude plugins:install context7
+claude plugins:install github
+claude plugins:install playwright
+claude plugins:install claude-md-management
+claude plugins:install ralph-loop
+```
+
+These plugins configure their MCP servers automatically.
+
 ### Install the Plugin
 
-1. **Add the marketplace to Claude Code:**
+1. **Add the marketplace and enable the plugin:**
 
-   Add to your `~/.claude/settings.json`:
-   ```json
-   {
-     "extraKnownMarketplaces": {
-       "mesca": {
-         "source": {
-           "source": "github",
-           "repo": "mesca/claude-plugins"
-         }
-       }
-     }
-   }
+   ```bash
+   claude marketplace add mesca --source github --repo mesca/claude-plugins
+   claude plugins:install wf@mesca
    ```
 
-2. **Enable the plugin:**
-
-   Add to your project's `.claude/settings.json` or global settings:
-   ```json
-   {
-     "enabledPlugins": {
-       "wf@mesca": true
-     }
-   }
-   ```
-
-3. **Restart Claude Code** to load the plugin.
-
-### MCP Servers
-
-MCP servers are pre-configured with the plugin.
-
-**Verify MCP setup:**
-```bash
-/wf:audit-mcp
-```
-
-Configured servers:
-
-| Server | Type | Purpose |
-|--------|------|---------|
-| serena | stdio | Code intelligence |
-| context7 | stdio | Documentation context |
-| github | http | GitHub API (requires `GITHUB_TOKEN`) |
-| playwright | stdio | Browser automation |
-
-### Install Prerequisites
-
-```bash
-# Install uv (Python package manager)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Install Node.js (for MCP servers)
-# macOS
-brew install node
-
-# Verify installations
-uv --version
-node --version
-npx --version
-```
+2. **Restart Claude Code** to load the plugin.
 
 ### Project Setup
 

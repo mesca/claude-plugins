@@ -1,5 +1,5 @@
 ---
-name: simplify
+name: simplifier
 description: Simplifies and refines Python code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise.
 user-invocable: false
 ---

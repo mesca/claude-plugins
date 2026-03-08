@@ -1,6 +1,6 @@
 ---
 name: spec-driven
-description: Enforce spec-driven development with contracts as single source of truth and models-first coding. Always apply when designing APIs, creating services, or writing data models.
+description: Enforce spec-driven development with contracts as single source of truth and models-first coding. Always apply when designing APIs, CLIs, creating services, or writing data models.
 user-invocable: false
 ---
 
@@ -10,13 +10,14 @@ Contracts are the single source of truth. Pydantic models come before implementa
 
 ## Contracts Directory
 
-Every project with an API (REST, JSON-RPC, or both) must have a contracts directory inside the source package:
+Every project with an API or CLI must have a contracts directory inside the source package:
 
 ```
 src/${PROJECT_NAME}/
 ├── contracts/              # Single source of truth
 │   ├── openapi.yaml        # REST API schema (OpenAPI 3.1)
-│   └── openrpc.yaml        # JSON-RPC schema (OpenRPC 1.3)
+│   ├── openrpc.yaml        # JSON-RPC schema (OpenRPC 1.3)
+│   └── cli.txt             # CLI contract (docopt format)
 ├── models/                 # Top-level shared models
 ├── core/
 ├── services/
@@ -28,6 +29,7 @@ src/${PROJECT_NAME}/
 - **Write the contract first** — before any implementation, define the API surface in `contracts/`
 - **OpenAPI 3.1** for REST/HTTP APIs (`openapi.yaml`)
 - **OpenRPC 1.3** for JSON-RPC APIs (`openrpc.yaml`)
+- **docopt** for CLI projects (`cli.txt`)
 - Schemas in contracts define the canonical data shapes — Pydantic models must match them
 - When the contract changes, update models and implementation to match
 - Contracts are versioned alongside the code — no separate schema repo
@@ -96,6 +98,49 @@ components:
         name:
           type: string
 ```
+
+### CLI Contracts (docopt)
+
+For CLI projects, use **docopt** as the contract format. The usage string is the single source of truth for the CLI interface.
+
+Place the contract in `contracts/cli.txt` (plain text, docopt format):
+
+```
+${PROJECT_NAME}
+
+Usage:
+  ${PROJECT_NAME} process <input> [--output=<path>] [--format=<fmt>]
+  ${PROJECT_NAME} validate <file>...
+  ${PROJECT_NAME} config (show | set <key> <value> | reset)
+  ${PROJECT_NAME} (-h | --help)
+  ${PROJECT_NAME} --version
+
+Options:
+  -h --help          Show this help message.
+  --version          Show version.
+  -o --output=<path> Output file path [default: stdout].
+  -f --format=<fmt>  Output format: json, csv, table [default: table].
+```
+
+**Rules**:
+
+- Write the docopt usage string **before** implementing the CLI
+- The usage string defines all commands, arguments, options, and defaults
+- Typer implementation must match the contract exactly: same commands, same option names, same defaults
+- When the CLI changes, update `contracts/cli.txt` first, then adjust the implementation
+- Use docopt sections: usage pattern, options with descriptions and defaults
+- Group related commands with parentheses for mutually exclusive choices
+
+**Docopt-to-Typer alignment**:
+
+| Docopt element | Typer equivalent |
+|---|---|
+| `<argument>` | `typer.Argument()` |
+| `--option=<val>` | `typer.Option("--option")` |
+| `[default: X]` | `default=X` in Option/Argument |
+| `command subcommand` | `app.add_typer()` sub-app |
+| `(a \| b)` | Mutually exclusive group or separate commands |
+| `<file>...` | `list[Path]` argument |
 
 ## Models-First Development
 

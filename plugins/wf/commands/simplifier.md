@@ -5,4 +5,4 @@ agent: general-purpose
 argument-hint: [file-or-scope]
 ---
 
-Load and apply the **wf:simplify** skill to the specified scope.
+Load and apply the **wf:simplifier** skill to the specified scope.
