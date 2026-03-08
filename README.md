@@ -122,29 +122,38 @@ node --version && npx --version && uv --version && uvx --version
 
 #### Companion Plugins
 
-Install from the official Anthropic Claude Plugins marketplace:
+Install from the official Anthropic Claude Plugins marketplace (run inside Claude Code):
 
-```bash
-claude plugins:install serena
-claude plugins:install context7
-claude plugins:install github
-claude plugins:install playwright
-claude plugins:install claude-md-management
-claude plugins:install ralph-loop
+```
+/plugin install serena@claude-plugins-official
+/plugin install context7@claude-plugins-official
+/plugin install github@claude-plugins-official
+/plugin install playwright@claude-plugins-official
+/plugin install claude-md-management@claude-plugins-official
+/plugin install ralph-loop@claude-plugins-official
 ```
 
 These plugins configure their MCP servers automatically.
 
+The **github** plugin requires a `GITHUB_PERSONAL_ACCESS_TOKEN` environment variable:
+
+1. Create a token at https://github.com/settings/tokens (Fine-grained or Classic)
+2. Add to your shell profile (`~/.zshrc` or `~/.bashrc`):
+   ```bash
+   export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_..."
+   ```
+3. Reload your shell (`source ~/.zshrc`) before launching Claude Code.
+
 ### Install the Plugin
 
-1. **Add the marketplace and enable the plugin:**
+Inside Claude Code:
 
-   ```bash
-   claude marketplace add mesca --source github --repo mesca/claude-plugins
-   claude plugins:install wf@mesca
-   ```
+```
+/plugin marketplace add mesca/claude-plugins
+/plugin install wf@mesca-claude-plugins
+```
 
-2. **Restart Claude Code** to load the plugin.
+Restart Claude Code to load the plugin.
 
 ### Project Setup
 
