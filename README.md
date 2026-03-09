@@ -52,6 +52,7 @@ These skills are applied automatically by Claude when relevant:
 |------|-------|-------------|
 | `load-constitution.sh` | SessionStart | Injects constitution into every session |
 | `detect-rate-limit.sh` | Notification, Stop | Logs rate limit warnings to `~/.claude/rate-limit.log` |
+| `notify.sh` | Notification | Sends alerts to Telegram, Discord, and/or Slack |
 
 ## Project Architecture
 
@@ -143,6 +144,29 @@ The **github** plugin requires a `GITHUB_PERSONAL_ACCESS_TOKEN` environment vari
    export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_..."
    ```
 3. Reload your shell (`source ~/.zshrc`) before launching Claude Code.
+
+#### Notifications (optional)
+
+The `notify.sh` hook sends alerts when Claude Code needs attention (permission prompts, idle, etc.). Set any combination of these environment variables in your shell profile (`~/.zshrc` or `~/.bashrc`):
+
+```bash
+export NOTIFY_TELEGRAM="bot_token|chat_id"
+export NOTIFY_DISCORD="https://discord.com/api/webhooks/..."
+export NOTIFY_SLACK="https://hooks.slack.com/services/..."
+```
+
+**Telegram:**
+1. Message [@BotFather](https://t.me/BotFather), send `/newbot`, follow the prompts to get a bot token
+2. Add the bot to your chat/group, then get the chat ID via `https://api.telegram.org/bot<TOKEN>/getUpdates`
+3. Format: `bot_token|chat_id` (e.g. `123456:ABC-DEF|-1001234567890`)
+
+**Discord:**
+1. In your server, go to **Settings > Integrations > Webhooks > New Webhook**
+2. Copy the webhook URL
+
+**Slack:**
+1. Create an app at [api.slack.com/apps](https://api.slack.com/apps), enable **Incoming Webhooks**
+2. Add a webhook to a channel and copy the URL
 
 #### CC-SDD (Spec-Driven Development)
 
