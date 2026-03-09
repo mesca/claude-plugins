@@ -51,7 +51,6 @@ These skills are applied automatically by Claude when relevant:
 | Hook | Event | Description |
 |------|-------|-------------|
 | `load-constitution.sh` | SessionStart | Injects constitution into every session |
-| `detect-rate-limit.sh` | Notification, Stop | Logs rate limit warnings to `~/.claude/rate-limit.log` |
 | `notify.sh` | Notification | Sends alerts to Telegram, Discord, and/or Slack |
 
 ## Project Architecture
